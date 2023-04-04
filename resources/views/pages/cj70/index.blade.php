@@ -15,28 +15,49 @@
         <div class="card mb-4">
             <div class="card-body">
                 <h5>Filter</h5>
-                <form class="row">
-                    <div class="col-12 col-md-4 col-lg-3 mb-3">
+                <form class="row" action="{{ route('cj70.index') }}" method="GET" id="form-search">
+                    <div class="col-12 col-md-6 col-lg-4 mb-3">
                         <label class="form-label">Cari</label>
-                        <input type="text" name="search" class="form-control" placeholder="Cari" value="">
+                        <input type="text" name="search" class="form-control" id="search" placeholder="Cari" value="{{ request()->search }}">
                     </div>
-                    <div class="col-12 col-md-4 col-lg-3 mb-3">
-                        <label class="form-label">Urutkan</label>
-                        <select name="sort" class="form-control" value="">
-                            <option value="name">Nama</option>
+                    <div class="col-12 col-md-6 col-lg-4 mb-3">
+                        <label class="form-label">Berdasarkan</label>
+                        <select name="type" class="form-control"id="type">
+                            <option @if(request()->type == 'ref_doc_number') selected @endif value="ref_doc_number">Ref Document Number</option>
+                            <option @if(request()->type == 'reservation') selected @endif value="reservation">Reservation</option>
+                            <option @if(request()->type == 'cost_element') selected @endif value="cost_element">Cost Element</option>
+                            <option @if(request()->type == 'period') selected @endif value="period">Period</option>
+                            <option @if(request()->type == 'posting_date') selected @endif value="posting_date">Posting Date</option>
+                            <option @if(request()->type == 'rem_val_cnt_cur') selected @endif value="rem_val_cnt_cur">Rem.val.cnt.cur.</option>
+                            <option @if(request()->type == 'qty') selected @endif value="qty">Total quantity</option>
+                            <option @if(request()->type == 'doc_header_text') selected @endif value="doc_header_text">Document Header Text</option>
+                            <option @if(request()->type == 'unloading_point') selected @endif value="unloading_point">Unloading Point</option>
+                            <option @if(request()->type == 'capitalized_auc') selected @endif value="capitalized_auc">Capitalized to AuC</option>
+                            <option @if(request()->type == 'name') selected @endif value="name">Name</option>
+                            <option @if(request()->type == 'vendor') selected @endif value="vendor">Vendor</option>
+                            <option @if(request()->type == 'vendor_name') selected @endif value="vendor_name">Vendor Name</option>
+                            <option @if(request()->type == 'material_description') selected @endif value="material_description">Material Description</option>
+                            <option @if(request()->type == 'material') selected @endif value="material">Material</option>
+                            <option @if(request()->type == 'wbs_element') selected @endif value="wbs_element">WBS Element</option>
                         </select>
                     </div>
-                    <div class="col-12 col-md-4 col-lg-3 mb-3">
+                    <div class="col-12 col-md-12 col-lg-4 mb-3">
                         <div>
                             <label class="form-label">&nbsp;</label>
                         </div>
                         <button type="submit" class="btn btn-primary me-2"><i class="bi bi-search"></i> Cari</button>
+                        <button type="button" class="btn btn-danger me-2" id="btn-reset"><i class="bi bi-arrow-clockwise"></i> Reset</button>
                         <a href="/cj70/create">
                             <button type="button" class="btn btn-success me-2">+ Baru</button>
                         </a>
                         <button type="button" class="btn btn-success me-2" data-bs-target="#import-cj70-modal" data-bs-toggle="modal"><i class="bi bi-cloud-arrow-up-fill"></i> Import</button>
                     </div>
                 </form>
+                @if (session('success'))
+                    <div class="alert alert-success" role="alert">
+                        {{ session('success') }}
+                    </div>
+                @endif
             </div>
         </div>
 
@@ -46,7 +67,7 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <td style="font-weight: bold;background: var(--bs-table-striped-bg);">:</td>
+                                <td style="font-weight: bold;background: var(--bs-table-striped-bg);">#</td>
                                 <td style="font-weight: bold;background: var(--bs-table-striped-bg);">Ref Document Number</td>
                                 <td style="font-weight: bold;background: var(--bs-table-striped-bg);">Reservation</td>
                                 <td style="font-weight: bold;background: var(--bs-table-striped-bg);">Cost Element</td>
@@ -66,243 +87,63 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>
-                                    <a href="/cj70/show/1">Detail</a>
-                                </td>
-                                <td>5006646395</td>
-                                <td>0</td>
-                                <td>6106201000</td>
-                                <td>12</td>
-                                <td>16/12/2022</td>
-                                <td>72912393</td>
-                                <td>1</td>
-                                <td>0038.SPBJ/D06040000/2022</td>
-                                <td>0038.SPBJ/DAN.01.02/D0604</td>
-                                <td>72912393</td>
-                                <td>0038.SPBJ/2022-REHAB KUBIKEL LOT1-TERM1</td>
-                                <td>400026046</td>
-                                <td>WASIS UNGGUL WISESA, PT.</td>
-                                <td></td>
-                                <td></td>
-                                <td>I.5489.22.09.0001.142.11</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <a href="/cj70/show/1">Detail</a>
-                                </td>
-                                <td>4925194044</td>
-                                <td>16113125</td>
-                                <td>6106100200</td>
-                                <td>10</td>
-                                <td>24/10/2022</td>
-                                <td>40149188</td>
-                                <td>2</td>
-                                <td>0038.SPBJ/D06040000/202</td>
-                                <td>0038.SPBJ/D06040000/202</td>
-                                <td>40149188</td>
-                                <td>0038/2022/PK3901 INST AB20B/PT WASIS UNGGUL/2022</td>
-                                <td></td>
-                                <td></td>
-                                <td>CUB;N ISO;LBS MOTORIZE;24KV;630A;16KA</td>
-                                <td>000000002150173</td>
-                                <td>I.5489.22.09.0001.142.11</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <a href="/cj70/show/1">Detail</a>
-                                </td>
-                                <td>4925194044</td>
-                                <td>16113125</td>
-                                <td>6106100200</td>
-                                <td>10</td>
-                                <td>24/10/2022</td>
-                                <td>21385504</td>
-                                <td>1</td>
-                                <td>0038.SPBJ/D06040000/202</td>
-                                <td>0038.SPBJ/D06040000/202</td>
-                                <td>21385504</td>
-                                <td>0038/2022/PK3901 INST AB20B/PT WASIS UNGGUL/2022</td>
-                                <td></td>
-                                <td></td>
-                                <td>CUB;N ISO;TP;24KV;630A;16KA</td>
-                                <td>000000002150605</td>
-                                <td>I.5489.22.09.0001.142.11</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <a href="/cj70/show/1">Detail</a>
-                                </td>
-                                <td>4925200406</td>
-                                <td>16113262</td>
-                                <td>6106100200</td>
-                                <td>10</td>
-                                <td>24/10/2022</td>
-                                <td>40149189</td>
-                                <td>2</td>
-                                <td>0038.SPBJ/D06040000/202</td>
-                                <td>0038.SPBJ/D06040000/202</td>
-                                <td>40149189</td>
-                                <td>0038/2022/PK3902 INST RM13/PT WASIS UNGGUL/2022</td>
-                                <td></td>
-                                <td></td>
-                                <td>CUB;N ISO;LBS MOTORIZE;24KV;630A;16KA</td>
-                                <td>000000002150173</td>
-                                <td>I.5489.22.09.0001.142.11</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <a href="/cj70/show/1">Detail</a>
-                                </td>
-                                <td>4925200406</td>
-                                <td>16113262</td>
-                                <td>6106100200</td>
-                                <td>10</td>
-                                <td>24/10/2022</td>
-                                <td>64156513</td>
-                                <td>3</td>
-                                <td>0038.SPBJ/D06040000/202</td>
-                                <td>0038.SPBJ/D06040000/202</td>
-                                <td>64156513</td>
-                                <td>0038/2022/PK3902 INST RM13/PT WASIS UNGGUL/2022</td>
-                                <td></td>
-                                <td></td>
-                                <td>CUB;N ISO;TP;24KV;630A;16KA</td>
-                                <td>000000002150605</td>
-                                <td>I.5489.22.09.0001.142.11</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <a href="/cj70/show/1">Detail</a>
-                                </td>
-                                <td>4925200406</td>
-                                <td>16113262</td>
-                                <td>6106100200</td>
-                                <td>10</td>
-                                <td>24/10/2022</td>
-                                <td>9480510</td>
-                                <td>90</td>
-                                <td>0038.SPBJ/D06040000/202</td>
-                                <td>0038.SPBJ/D06040000/202</td>
-                                <td>9480510</td>
-                                <td>0038/2022/PK3902 INST RM13/PT WASIS UNGGUL/2022</td>
-                                <td></td>
-                                <td></td>
-                                <td>CABLE PWR;N2XSY;1X35mm2;20kV;UG</td>
-                                <td>000000003110010</td>
-                                <td>I.5489.22.09.0001.142.11</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <a href="/cj70/show/1">Detail</a>
-                                </td>
-                                <td>4925211714</td>
-                                <td>16113204</td>
-                                <td>6106100200</td>
-                                <td>10</td>
-                                <td>25/10/2022</td>
-                                <td>60223783</td>
-                                <td>3</td>
-                                <td>0038.SPBJ/D06040000/202</td>
-                                <td>0038.SPBJ/D06040000/202</td>
-                                <td>60223783</td>
-                                <td>0038/2022/PK3903 INST PS51/PT WASIS UNGGUL/2022</td>
-                                <td></td>
-                                <td></td>
-                                <td>CUB;N ISO;LBS MOTORIZE;24KV;630A;16KA</td>
-                                <td>000000002150173</td>
-                                <td>I.5489.22.09.0001.142.11</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <a href="/cj70/show/1">Detail</a>
-                                </td>
-                                <td>4925211714</td>
-                                <td>16113204</td>
-                                <td>6106100200</td>
-                                <td>10</td>
-                                <td>25/10/2022</td>
-                                <td>87946166</td>
-                                <td>1</td>
-                                <td>0038.SPBJ/D06040000/202</td>
-                                <td>0038.SPBJ/D06040000/202</td>
-                                <td>87946166</td>
-                                <td>0038/2022/PK3903 INST PS51/PT WASIS UNGGUL/2022</td>
-                                <td></td>
-                                <td></td>
-                                <td>CUB;N ISO;CBOG MOT MTR;24KV;630A;16KA</td>
-                                <td>000000002150599</td>
-                                <td>I.5489.22.09.0001.142.11</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <a href="/cj70/show/1">Detail</a>
-                                </td>
-                                <td>4925211714</td>
-                                <td>16113204</td>
-                                <td>6106100200</td>
-                                <td>10</td>
-                                <td>25/10/2022</td>
-                                <td>4740255</td>
-                                <td>45</td>
-                                <td>0038.SPBJ/D06040000/202</td>
-                                <td>0038.SPBJ/D06040000/202</td>
-                                <td>4740255</td>
-                                <td>0038/2022/PK3903 INST PS51/PT WASIS UNGGUL/2022</td>
-                                <td></td>
-                                <td></td>
-                                <td>CABLE PWR;N2XSY;1X35mm2;20kV;UG</td>
-                                <td>000000003110010</td>
-                                <td>I.5489.22.09.0001.142.11</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <a href="/cj70/show/1">Detail</a>
-                                </td>
-                                <td>4925222032</td>
-                                <td>16127115</td>
-                                <td>6106100200</td>
-                                <td>10</td>
-                                <td>27/10/2022</td>
-                                <td>20074594</td>
-                                <td>1</td>
-                                <td>0038.SPBJ/D06040000/202</td>
-                                <td>0038.SPBJ/D06040000/202</td>
-                                <td>20074594</td>
-                                <td>0038/2022/PK3913 INST PS41/PT WASIS UNGGUL/2022</td>
-                                <td></td>
-                                <td></td>
-                                <td>CUB;N ISO;LBS MOTORIZE;24KV;630A;16KA</td>
-                                <td>000000002150173</td>
-                                <td>I.5489.22.09.0001.142.11</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <a href="/cj70/show/1">Detail</a>
-                                </td>
-                                <td>4925222032</td>
-                                <td>16127115</td>
-                                <td>6106100200</td>
-                                <td>10</td>
-                                <td>27/10/2022</td>
-                                <td>4108221</td>
-                                <td>39</td>
-                                <td>0038.SPBJ/D06040000/202</td>
-                                <td>0038.SPBJ/D06040000/202</td>
-                                <td>4108221</td>
-                                <td>0038/2022/PK3913 INST PS41/PT WASIS UNGGUL/2022</td>
-                                <td></td>
-                                <td></td>
-                                <td>CABLE PWR;N2XSY;1X35mm2;20kV;UG</td>
-                                <td>000000003110010</td>
-                                <td>I.5489.22.09.0001.142.11</td>
-                            </tr>
+                            @forelse ($data as $value)
+                                <tr>
+                                    <td>
+                                        <a href="/cj70/show/1">Detail</a>
+                                    </td>
+                                    <td>{{ $value->ref_doc_number }}</td>
+                                    <td>{{ $value->reservation }}</td>
+                                    <td>{{ $value->cost_element }}</td>
+                                    <td>{{ $value->period }}</td>
+                                    <td>{{ date('d/m/Y',strtotime($value->posting_date)) }}</td>
+                                    <td>{{ $value->rem_val_cnt_cur }}</td>
+                                    <td>{{ $value->qty }}</td>
+                                    <td>{{ $value->doc_header_text }}</td>
+                                    <td>{{ $value->unloading_point }}</td>
+                                    <td>{{ $value->capitalized_auc }}</td>
+                                    <td>{{ $value->name }}</td>
+                                    <td>{{ $value->vendor }}</td>
+                                    <td>{{ $value->vendor_name }}</td>
+                                    <td>{{ $value->material }}</td>
+                                    <td>{{ $value->material_description }}</td>
+                                    <td>{{ $value->wbs_element }}</td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="17" class="text-center">Data masih kosong</td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
+                {{ $data->render("pagination::bootstrap-4") }}
             </div>
         </div>
     </div>
 
     <x-modal.import-cj70/>
+@endsection
+
+@section('js')
+<script>
+    $('#btn-reset').click(function(){
+        $('#search').val('');
+        $('#type').val('ref_doc_number');
+        $('#form-search').submit();
+    });
+    $('#btn-import-cancel').click(function(){
+        $('#file').val('');
+        $('#file-error').addClass('d-none');
+    });
+    $('#btn-import').click(function(){
+        var file = $('#file').val();
+        $('#file-error').addClass('d-none');
+        if(!file){
+            $('#file-error').removeClass('d-none');
+            return;
+        }
+        $('#form-import').submit();
+    });
+</script>
 @endsection

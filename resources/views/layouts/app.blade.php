@@ -70,6 +70,7 @@
     <script src="/assets/vendors/jquery@3.6.3/jquery.min.js"></script>
     <!-- Core theme JS-->
     <script src="/assets/js/scripts.js?v={{ time() }}"></script>
+    @yield('js')
 </body>
 
 </html>

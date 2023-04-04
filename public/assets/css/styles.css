@@ -366,6 +366,7 @@ th {
     border-color: inherit;
     border-style: solid;
     border-width: 0;
+    white-space: nowrap;
 }
 
 label {

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cj70;
+use App\Imports\ExcelCj70;
 use Illuminate\Http\Request;
 
 class Cj70Controller extends Controller
@@ -11,9 +13,14 @@ class Cj70Controller extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('pages.cj70.index');
+        $type = $request->type;
+        $search = $request->search;
+        $data = Cj70::when($type, function($query) use ($type,$search){
+            $query->where($type,'like',$search.'%');
+        })->paginate(20);
+        return view('pages.cj70.index',compact('data'));
     }
 
     /**
@@ -80,5 +87,14 @@ class Cj70Controller extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function import(Request $request)
+    {
+        $this->validate($request, [
+            'file' => 'required|mimes:xlsx|max:2048',
+        ]);
+        \Excel::import(new ExcelCj70, $request->file('file'));
+        return redirect()->back()->withSuccess('Berhasil import file');
     }
 }

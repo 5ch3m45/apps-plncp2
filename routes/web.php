@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
+    AuthController,
     AdminController,
     Cj70Controller,
     KartuPdpController,
@@ -39,13 +40,14 @@ Route::middleware([/* 'auth' */ 'guest'])->group(function() {
     Route::post('admin/edit/{id}', [AdminController::class, 'update']);
     Route::delete('admin/delete/{id}', [AdminController::class, 'destroy']);
 
-    Route::get('cj70', [Cj70Controller::class, 'index']);
+    Route::get('cj70', [Cj70Controller::class, 'index'])->name('cj70.index');
     Route::get('cj70/create', [Cj70Controller::class, 'create']);
     Route::post('cj70/create', [Cj70Controller::class, 'store']);
     Route::get('cj70/show/{id}', [Cj70Controller::class, 'show']);
     Route::get('cj70/edit/{id}', [Cj70Controller::class, 'edit']);
     Route::post('cj70/edit/{id}', [Cj70Controller::class, 'update']);
     Route::delete('cj70/delete/{id}', [Cj70Controller::class, 'destroy']);
+    Route::post('cj70/import', [Cj70Controller::class, 'import'])->name('cj70.import');
 
     Route::get('kartu-pdp', [KartuPdpController::class, 'index']);
     Route::get('kartu-pdp/create', [KartuPdpController::class, 'create']);
