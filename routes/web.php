@@ -7,6 +7,7 @@ use App\Http\Controllers\{
     Cj70Controller,
     KartuPdpController,
     Lampiran2f3Controller,
+    MaterialController,
     MonitoringPdpController,
     MonitoringPfkController,
     ProfileController,
@@ -64,6 +65,9 @@ Route::middleware([/* 'auth' */ 'guest'])->group(function() {
     Route::get('lampiran-2f3/edit/{id}', [Lampiran2f3Controller::class, 'edit']);
     Route::post('lampiran-2f3/edit/{id}', [Lampiran2f3Controller::class, 'update']);
     Route::delete('lampiran-2f3/delete/{id}', [Lampiran2f3Controller::class, 'destroy']);
+
+    Route::get('material', [MaterialController::class, 'index'])->name('material.index');
+    Route::post('material/import', [MaterialController::class, 'import'])->name('material.import');
 
     Route::get('monitoring-pdp', [MonitoringPdpController::class, 'index']);
     Route::get('monitoring-pdp/show/{id}', [MonitoringPdpController::class, 'show']);

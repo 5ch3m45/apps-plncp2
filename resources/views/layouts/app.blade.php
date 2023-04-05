@@ -30,6 +30,7 @@
                 <a class="list-group-item list-group-item-action list-group-item-light px-3 py-2" href="/cj70"><i class="bi bi-file-earmark-ruled me-2"></i> CJ70</a>
                 <a class="list-group-item list-group-item-action list-group-item-light px-3 py-2" href="/lampiran-2f3"><i class="bi bi-file-spreadsheet me-2"></i> Lampiran 2F3</a>
                 <a class="list-group-item list-group-item-action list-group-item-light px-3 py-2" href="/monitoring-pfk"><i class="bi bi-eyeglasses me-2"></i> Monitoring PFK</a>
+                <a class="list-group-item list-group-item-action list-group-item-light px-3 py-2" href="/material"><i class="bi bi-wrench-adjustable-circle me-2"></i> Material</a>
                 <a class="list-group-item list-group-item-action list-group-item-light px-3 py-2" href="/admin"><i class="bi bi-people me-2"></i> Admin</a>
                 <a class="list-group-item list-group-item-action list-group-item-light px-3 py-2" href="/profile"><i class="bi bi-person-circle me-2"></i> Profil Saya</a>
                 <a class="list-group-item list-group-item-action list-group-item-light px-3 py-2 text-danger" href="/logout"><i class="bi bi-power me-2"></i> Logout</a>
