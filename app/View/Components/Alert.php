@@ -1,22 +1,22 @@
 <?php
 
-namespace App\View\Components\Modal;
+namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class HapusKartuPdp extends Component
+class Alert extends Component
 {
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public $url;
-    public $cj70;
-    public function __construct($url,$cj70)
+    public $level;
+    public $message;
+    public function __construct($level, $message)
     {
-        $this->url = $url;
-        $this->cj70 = $cj70;
+        $this->level   = $level;
+        $this->message = $message;
     }
 
     /**
@@ -26,6 +26,6 @@ class HapusKartuPdp extends Component
      */
     public function render()
     {
-        return view('components.modal.hapus-kartu-pdp');
+        return view('components.alert');
     }
 }

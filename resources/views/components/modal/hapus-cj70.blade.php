@@ -9,7 +9,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-white" type="button" data-bs-dismiss="modal">Batal</button>
-                <button class="btn btn-danger" type="button">Hapus</button>
+                <div id="action-hapus"></div>
             </div>
         </div>
     </div>

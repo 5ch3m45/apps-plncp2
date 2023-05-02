@@ -9,110 +9,87 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
                 <li class="breadcrumb-item"><a href="/cj70">CJ70</a></li>
-                <li class="breadcrumb-item active" aria-current="page">4924867440</li>
+                <li class="breadcrumb-item active" aria-current="page">{{ $data->ref_doc_number }}</li>
             </ol>
         </nav>
 
         <div class="card mb-4">
             <div class="card-body">
-                <div class="table-responsive mb-3">
-                    <table id="form-table" class="table table-bordered">
+                <div class="table-responsive">
+                    <table id="form-table" class="table">
                         <tbody>
                             <tr>
                                 <th>Nomor SPK</th>
-                                <td><select class="form-control">
-                                        <option value="" selected="">Pilih SPK</option>
-                                        <option value="1">0031.SPJB/DAN.01.02/D06040000/2022</option>
-                                        <option value="13">0032.SPJB/DAN.01.02/D06040000/2022</option>
-                                        <option value="14">0033.SPJB/DAN.01.02/D06040000/2022</option>
-                                    </select></td>
+                                <td>: {{ $data->kartu_pdp->spk_number }}</td>
+                            </tr>
+                            <tr>
+                                <th>Nomor TUG</th>
+                                <td>: {{ $data->ref_doc_number }}</td>
                             </tr>
                             <tr>
                                 <th>GL Account</th>
-                                <td><input type="text" class="form-control"></td>
-                            </tr>
-                            <tr>
-                                <th>Master Asset</th>
-                                <td><input type="text" class="form-control"></td>
+                                <td>: {{ $data->cost_element }}</td>
                             </tr>
                             <tr>
                                 <th>Nomor WBS</th>
-                                <td><input type="text" class="form-control">
-                                    <div class="input-group"></div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>Nomor Material</th>
-                                <td><input type="text" class="form-control"></td>
-                            </tr>
-                            <tr>
-                                <th>Nama Pekerjaan Material</th>
-                                <td><input type="text" class="form-control"></td>
-                            </tr>
-                            <tr>
-                                <th>Gardu</th>
-                                <td><input type="text" class="form-control"></td>
-                            </tr>
-                            <tr>
-                                <th>Alamat</th>
-                                <td><textarea class="form-control"></textarea></td>
-                            </tr>
-                            <tr>
-                                <th>Penyulang</th>
-                                <td><input type="text" class="form-control"></td>
-                            </tr>
-                            <tr>
-                                <th>Quantity</th>
-                                <td><input type="text" class="form-control"></td>
-                            </tr>
-                            <tr>
-                                <th>Satuan</th>
-                                <td><input type="text" class="form-control"></td>
-                            </tr>
-                            <tr>
-                                <th>Nilai Pekerjaan Jasa</th>
-                                <td>
-                                    <div class="input-group"><span class="input-group-text">Rp</span><input class="form-control" type="text"></div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>No. Slip TUG9</th>
-                                <td><input type="text" class="form-control"></td>
-                            </tr>
-                            <tr>
-                                <th>Nilai TUG9</th>
-                                <td>
-                                    <div class="input-group"><span class="input-group-text">Rp</span><input class="form-control" type="text" value="0"></div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>No. Slip TUG10</th>
-                                <td><input type="text" class="form-control"></td>
-                            </tr>
-                            <tr>
-                                <th>Nilai TUG10</th>
-                                <td>
-                                    <div class="input-group"><span class="input-group-text">Rp</span><input class="form-control" type="text" value="0"></div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>Nilai Overhead</th>
-                                <td>
-                                    <div class="input-group"><span class="input-group-text">Rp</span><input class="form-control" type="text" value="0"></div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>Jumlah</th>
-                                <td>
-                                    <div class="input-group"><span class="input-group-text">Rp</span><input class="form-control" type="text" value="0"></div>
-                                </td>
+                                <td>: {{ $data->wbs_element }}</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                <div class="d-flex justify-content-end">
-                    <button class="btn btn-white btn-sm ms-2" type="button"><i class="bi bi-arrow-clockwise"></i> Reset</button>
-                    <button class="btn btn-primary btn-sm ms-2" type="button"><i class="bi bi-cloud-arrow-up-fill"></i> Simpan</button>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="mb-4">Material</h5>
+                <div class="table-responsive mb-3">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <td rowspan="2" style="font-weight: bold;background: var(--bs-table-striped-bg);">#</td>
+                                <td rowspan="2" style="font-weight: bold;background: var(--bs-table-striped-bg);">No. Material</td>
+                                <td rowspan="2" style="font-weight: bold;background: var(--bs-table-striped-bg);">Nama Pekerjaan Material</td>
+                                <td rowspan="2" style="font-weight: bold;background: var(--bs-table-striped-bg);">Quantity</td>
+                                <td rowspan="2" style="font-weight: bold;background: var(--bs-table-striped-bg);">Satuan</td>
+                                <td rowspan="2" style="font-weight: bold;background: var(--bs-table-striped-bg);">Nilai Pekerjaan (Jasa)</td>
+                                <td colspan="2" style="font-weight: bold;background: var(--bs-table-striped-bg);">TUG 9</td>
+                                <td colspan="2" style="font-weight: bold;background: var(--bs-table-striped-bg);">TUG 10</td>
+                                <td rowspan="2" style="font-weight: bold;background: var(--bs-table-striped-bg);">Nilai Overhead</td>
+                                <td rowspan="2" style="font-weight: bold;background: var(--bs-table-striped-bg);">Jumlah</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;background: var(--bs-table-striped-bg);">No. Slip</td>
+                                <td style="font-weight: bold;background: var(--bs-table-striped-bg);">Nilai</td>
+                                <td style="font-weight: bold;background: var(--bs-table-striped-bg);">No. Slip</td>
+                                <td style="font-weight: bold;background: var(--bs-table-striped-bg);">Nilai</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @php
+                                $total = 0;
+                            @endphp
+                            @foreach ($data->materials as $key => $value)
+                                @php
+                                    $total += $value->job_value + $value->capitalized_auc + $value->overhead_value;
+                                @endphp
+                                <tr>
+                                    <td>{{ ++$key }}</td>
+                                    <td>{{ $value->material ? $value->material->code : '-' }}</td>
+                                    <td>{{ $value->material ? $value->material->material_description : '-' }}</td>
+                                    <td>{{ $value->qty }}</td>
+                                    <td>{{ $value->material ? $value->material->base_unit_of_measure : '-' }}</td>
+                                    <td>{{ local_number($value->job_value) }}</td>
+                                    <td>{{ $value->capitalized_auc > 0 ? $data->ref_doc_number : '-' }}</td>
+                                    <td>{{ $value->capitalized_auc > 0 ? local_number($value->capitalized_auc) : '-' }}</td>
+                                    <td>{{ $value->capitalized_auc < 0 ? $data->ref_doc_number : '-' }}</td>
+                                    <td>{{ $value->capitalized_auc < 0 ? local_number($value->capitalized_auc) : '-' }}</td>
+                                    <td>{{ local_number($value->overhead_value) }}</td>
+                                    <td>{{ local_number($value->job_value + $value->capitalized_auc + $value->overhead_value) }}</td>
+                                </tr>  
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

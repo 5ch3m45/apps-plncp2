@@ -12324,17 +12324,34 @@ a {
 .alert-success,
 .alert-danger,
 .input-group-text,
-.select2-container--bootstrap-5 .select2-selection,
-.select2-container--bootstrap-5 .select2-dropdown .select2-search .select2-search__field {
+.select2-container .select2-selection,
+.select2-container .select2-dropdown .select2-search .select2-search__field {
     border-radius: 10px;
     box-shadow: rgba(0, 0, 0, 0.15) 0px 1px 4px;
     border: 0px
 }
 
-.select2-container--bootstrap-5 .select2-selection,
-.select2-container--bootstrap-5 .select2-dropdown .select2-results__options .select2-results__option,
-.select2-container--bootstrap-5 .select2-dropdown .select2-search .select2-search__field {
+.select2-container .select2-selection,
+.select2-container .select2-dropdown .select2-results__options .select2-results__option,
+.select2-container .select2-dropdown .select2-search .select2-search__field {
     font-size: .7rem
+}
+
+.select2-container .select2-selection--single .select2-selection__rendered {
+    line-height: 28px;
+    padding-left: 12px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow b {
+    border-color: #888 transparent transparent transparent;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 28px;
+}
+
+.select2-results__option:hover {
+    background-color: #d3d6d8;
 }
 
 .alert-success {

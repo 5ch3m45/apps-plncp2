@@ -10,21 +10,24 @@ class Cj70 extends Model
     use HasFactory;
 
     protected $fillable = [
+		'pdp_card_id',
         'ref_doc_number',
         'reservation',
     	'cost_element',
+    	'wbs_element',
     	'period',
     	'posting_date',
-    	'rem_val_cnt_cur',
-    	'qty',
-    	'doc_header_text',
     	'unloading_point',
-    	'capitalized_auc',
-    	'name',
-    	'vendor',
-    	'vendor_name',
-    	'material',
-    	'material_description',
-    	'wbs_element'
+    	'doc_header_text'
     ];
+
+    public function kartu_pdp()
+    {
+        return $this->belongsTo(PdpCard::class, 'pdp_card_id');
+    }
+
+    public function materials()
+    {
+        return $this->hasMany(Cj70Material::class, 'cj70_id');
+    }
 }

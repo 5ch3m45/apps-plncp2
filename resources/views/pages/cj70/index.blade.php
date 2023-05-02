@@ -18,7 +18,7 @@
                 <form class="row" action="{{ route('cj70.index') }}" method="GET" id="form-search">
                     <div class="col-12 col-md-6 col-lg-4 mb-3">
                         <label class="form-label">Cari</label>
-                        <input type="text" name="search" class="form-control" id="search" placeholder="Cari" value="{{ request()->search }}">
+                        <input type="text" name="search" class="form-control" id="search" placeholder="Cari" value="{{ request()->type == 'posting_date' && request()->search ? date('d/m/Y',strtotime(request()->search)) : request()->search }}">
                     </div>
                     <div class="col-12 col-md-6 col-lg-4 mb-3">
                         <label class="form-label">Berdasarkan</label>
@@ -37,7 +37,7 @@
                             <option @if(request()->type == 'vendor') selected @endif value="vendor">Vendor</option>
                             <option @if(request()->type == 'vendor_name') selected @endif value="vendor_name">Vendor Name</option>
                             <option @if(request()->type == 'material_description') selected @endif value="material_description">Material Description</option>
-                            <option @if(request()->type == 'material') selected @endif value="material">Material</option>
+                            <option @if(request()->type == 'code') selected @endif value="material">Material</option>
                             <option @if(request()->type == 'wbs_element') selected @endif value="wbs_element">WBS Element</option>
                         </select>
                     </div>
@@ -90,24 +90,24 @@
                             @forelse ($data as $value)
                                 <tr>
                                     <td>
-                                        <a href="/cj70/show/1">Detail</a>
+                                        <a class="text-info" href="{{ route('cj70.edit',$value->cj70_id) }}">Edit</a> || <a href="{{ route('cj70.show',$value->cj70_id) }}">Detail</a>
                                     </td>
-                                    <td>{{ $value->ref_doc_number }}</td>
-                                    <td>{{ $value->reservation }}</td>
-                                    <td>{{ $value->cost_element }}</td>
-                                    <td>{{ $value->period }}</td>
-                                    <td>{{ date('d/m/Y',strtotime($value->posting_date)) }}</td>
+                                    <td>{{ $value->cj70->ref_doc_number }}</td>
+                                    <td>{{ $value->cj70->reservation }}</td>
+                                    <td>{{ $value->cj70->cost_element }}</td>
+                                    <td>{{ $value->cj70->period }}</td>
+                                    <td>{{ date('d/m/Y',strtotime($value->cj70->posting_date)) }}</td>
                                     <td>{{ $value->rem_val_cnt_cur }}</td>
                                     <td>{{ $value->qty }}</td>
-                                    <td>{{ $value->doc_header_text }}</td>
-                                    <td>{{ $value->unloading_point }}</td>
+                                    <td>{{ $value->cj70->doc_header_text }}</td>
+                                    <td>{{ $value->cj70->unloading_point }}</td>
                                     <td>{{ $value->capitalized_auc }}</td>
                                     <td>{{ $value->name }}</td>
                                     <td>{{ $value->vendor }}</td>
                                     <td>{{ $value->vendor_name }}</td>
-                                    <td>{{ $value->material }}</td>
-                                    <td>{{ $value->material_description }}</td>
-                                    <td>{{ $value->wbs_element }}</td>
+                                    <td>{{ $value->material ? $value->material->code : '' }}</td>
+                                    <td>{{ $value->material ? $value->material->material_description : '' }}</td>
+                                    <td>{{ $value->cj70->wbs_element }}</td>
                                 </tr>
                             @empty
                                 <tr>
@@ -127,6 +127,12 @@
 
 @section('js')
 <script>
+    $('#type').change(function(){
+        $('#search').attr('type','text');
+        if(this.value == 'posting_date'){
+            $('#search').attr('type','date');
+        }
+    });
     $('#btn-reset').click(function(){
         $('#search').val('');
         $('#type').val('ref_doc_number');

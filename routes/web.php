@@ -41,22 +41,29 @@ Route::middleware([/* 'auth' */ 'guest'])->group(function() {
     Route::post('admin/edit/{id}', [AdminController::class, 'update']);
     Route::delete('admin/delete/{id}', [AdminController::class, 'destroy']);
 
-    Route::get('cj70', [Cj70Controller::class, 'index'])->name('cj70.index');
-    Route::get('cj70/create', [Cj70Controller::class, 'create']);
-    Route::post('cj70/create', [Cj70Controller::class, 'store']);
-    Route::get('cj70/show/{id}', [Cj70Controller::class, 'show']);
-    Route::get('cj70/edit/{id}', [Cj70Controller::class, 'edit']);
-    Route::post('cj70/edit/{id}', [Cj70Controller::class, 'update']);
-    Route::delete('cj70/delete/{id}', [Cj70Controller::class, 'destroy']);
-    Route::post('cj70/import', [Cj70Controller::class, 'import'])->name('cj70.import');
+    Route::group(['prefix' => 'cj70', 'as' => 'cj70.'], function() {
+        Route::get('', [Cj70Controller::class, 'index'])->name('index');
+        Route::get('create', [Cj70Controller::class, 'create'])->name('create');
+        Route::post('create', [Cj70Controller::class, 'store'])->name('store');
+        Route::get('show/{id}', [Cj70Controller::class, 'show'])->name('show');
+        Route::get('edit/{id}', [Cj70Controller::class, 'edit'])->name('edit');
+        Route::post('update/{id}', [Cj70Controller::class, 'update'])->name('update');
+        Route::delete('delete/{id}', [Cj70Controller::class, 'destroy'])->name('destroy');
+        Route::get('delete/material/{id}', [Cj70Controller::class, 'destroy_cj70_material'])->name('destroy.material');
+        Route::post('import', [Cj70Controller::class, 'import'])->name('import');
+        Route::get('material', [Cj70Controller::class, 'get_material'])->name('material');
+    });
 
-    Route::get('kartu-pdp', [KartuPdpController::class, 'index']);
-    Route::get('kartu-pdp/create', [KartuPdpController::class, 'create']);
-    Route::post('kartu-pdp/create', [KartuPdpController::class, 'store']);
-    Route::get('kartu-pdp/show/{id}', [KartuPdpController::class, 'show']);
-    Route::get('kartu-pdp/edit/{id}', [KartuPdpController::class, 'edit']);
-    Route::post('kartu-pdp/edit/{id}', [KartuPdpController::class, 'update']);
-    Route::delete('kartu-pdp/delete/{id}', [KartuPdpController::class, 'destroy']);
+    Route::group(['prefix' => 'kartu-pdp', 'as' => 'kartu-pdp.'], function() {
+        Route::get('', [KartuPdpController::class, 'index'])->name('index');
+        Route::get('create', [KartuPdpController::class, 'create'])->name('create');
+        Route::post('create', [KartuPdpController::class, 'store'])->name('store');
+        Route::get('show/{id}', [KartuPdpController::class, 'show'])->name('show');
+        Route::get('edit/{id}', [KartuPdpController::class, 'edit'])->name('edit');
+        Route::get('archive/{id}', [KartuPdpController::class, 'archive'])->name('archive');
+        Route::post('update/{id}', [KartuPdpController::class, 'update'])->name('update');
+        Route::delete('delete/{id}', [KartuPdpController::class, 'destroy'])->name('destroy');
+    });
 
     Route::get('lampiran-2f3', [Lampiran2f3Controller::class, 'index']);
     Route::get('lampiran-2f3/create', [Lampiran2f3Controller::class, 'create']);

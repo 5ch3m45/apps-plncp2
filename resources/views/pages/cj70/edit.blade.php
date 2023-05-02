@@ -1,15 +1,15 @@
 @extends('layouts.app')
 
-@section('title') Tambah CJ70 @endsection
+@section('title') Edit CJ70 @endsection
 
 @section('content')
     <div>
-        <h3><i class="bi bi-file-earmark-ruled"></i> Tambah CJ70</h3>
+        <h3><i class="bi bi-file-earmark-ruled"></i> Edit CJ70</h3>
         <nav aria-label="breadcrumb mb-4">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
                 <li class="breadcrumb-item">CJ70</li>
-                <li class="breadcrumb-item active" aria-current="page">Tambah CJ70</li>
+                <li class="breadcrumb-item active" aria-current="page">Edit CJ70</li>
             </ol>
         </nav>
 
@@ -18,7 +18,7 @@
                 @if (session('message'))
                     <x-alert message="{{ session('message') }}" level="{{ session('level') }}" />
                 @endif
-                <form method="POST" action="{{ route('cj70.store') }}">
+                <form method="POST" action="{{ route('cj70.update',$data->id) }}">
                     @csrf
                     <div class="table-responsive mb-2">
                         <table id="table-form" class="table">
@@ -29,22 +29,24 @@
                                         <select class="form-control select2 w-100" name="nomor_spk">
                                             <option value="" selected="">Pilih SPK</option>
                                             @foreach ($spk as $value)
-                                                <option value="{{ $value->id }}">{{ $value->spk_number }}</option>
+                                                <option value="{{ $value->id }}" @if ($value->id == $data->pdp_card_id)
+                                                    selected
+                                                @endif>{{ $value->spk_number }}</option>
                                             @endforeach
                                         </select>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>Nomor TUG</th>
-                                    <td><input type="text" class="form-control" name="nomor_tug"></td>
+                                    <td><input type="text" class="form-control" name="nomor_tug" value="{{ $data->ref_doc_number }}"></td>
                                 </tr>
                                 <tr>
                                     <th>GL Account</th>
-                                    <td><input type="text" class="form-control" name="gl_account"></td>
+                                    <td><input type="text" class="form-control" name="gl_account" value="{{ $data->cost_element }}"></td>
                                 </tr>
                                 <tr>
                                     <th>Nomor WBS</th>
-                                    <td><input type="text" class="form-control" name="nomor_wbs"></td>
+                                    <td><input type="text" class="form-control" name="nomor_wbs" value="{{ $data->wbs_element }}"></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -56,8 +58,7 @@
                                 <tr>
                                     <td style="font-weight: bold;background: var(--bs-table-striped-bg);" class="text-center">#</td>
                                     <td style="font-weight: bold;background: var(--bs-table-striped-bg);">Master Asset</td>
-                                    <td style="font-weight: bold;background: var(--bs-table-striped-bg);">No. Material</td>
-                                    <td style="font-weight: bold;background: var(--bs-table-striped-bg);">Nama Pekerjaan Material</td>
+                                    <td style="font-weight: bold;background: var(--bs-table-striped-bg);">No. Material / Nama Pekerjaan Material</td>
                                     <td style="font-weight: bold;background: var(--bs-table-striped-bg);">Gardu</td>
                                     <td style="font-weight: bold;background: var(--bs-table-striped-bg);">Alamat</td>
                                     <td style="font-weight: bold;background: var(--bs-table-striped-bg);">Penyulang</td>
@@ -69,40 +70,62 @@
                                 </tr>
                             </thead>
                             <tbody id="dynamic_form">
-                                <tr>
-                                    <td class="text-center"><a href="#" class="btn btn-primary btn-sm btn-tambah"><i class="bi bi-plus"></i> Tambah</a></td>
-                                    <td><input type="text" class="form-control" name="master_asset[]" style="width: 100px;"></td>
-                                    <td>
-                                        <select class="form-control material select2 w-100" name="material[]" style="width: 120px;">
-                                            <option value="" selected="">Pilih No. Material</option>
-                                        </select>
-                                    </td>
-                                    <td><input type="text" class="form-control bg-white nama_material" readonly style="width: 200px;"></td>
-                                    <td><input type="text" class="form-control" name="gardu[]" style="width: 50px;"></td>
-                                    <td><input type="text" class="form-control" name="alamat[]" style="width: 300px;"></td>
-                                    <td><input type="text" class="form-control" name="penyulang[]" style="width: 80px;"></td>
-                                    <td><input type="number" class="form-control" name="qty[]" style="width: 70px;"></td>
-                                    <td><input type="text" class="form-control bg-white satuan" readonly style="width: 50px;"></td>
-                                    <td><input type="text" class="form-control numbering" name="nilai_pekerjaan[]" style="width: 100px;"></td>
-                                    <td><input type="text" class="form-control numbering" name="nilai_material[]" style="width: 100px;"></td>
-                                    <td><input type="text" class="form-control numbering" name="nilai_overhead[]" style="width: 100px;"></td>
-                                </tr>
+                                @foreach ($data->materials as $key => $value)
+                                    <tr @if($key > 0) class="new-form" @endif>
+                                        @if ($key == 0)
+                                            <td class="text-center"><a href="#" class="btn btn-primary btn-sm btn-tambah"><i class="bi bi-plus"></i> Tambah</a></td>
+                                        @else
+                                            <td class="text-center"><a class="btn btn-danger btn-sm btn-hapus" data-id="{{ $value->id }}" data-bs-target="#hapus-material-modal" data-bs-toggle="modal" href="#"><i class="bi-trash-fill"></i> Hapus</a></td>
+                                        @endif
+                                        <td>
+                                            <input type="hidden" class="form-control" name="cj70_material[]" value="{{ $value->id }}" style="width: 100px;">
+                                            <input type="text" class="form-control" name="master_asset[]" value="{{ $value->master_asset }}" style="width: 100px;"></td>
+                                        <td>
+                                            <select class="form-control material select2 w-100" name="material[]" style="width: 150px;">
+                                                <option value="{{ $value->material_id }}" selected>{{ $value->material ? $value->material->code .' - '.$value->material->material_description : '' }}</option>
+                                            </select>
+                                        </td>
+                                        <td><input type="text" class="form-control" name="gardu[]" value="{{ $value->substation }}" style="width: 50px;"></td>
+                                        <td><input type="text" class="form-control" name="alamat[]" value="{{ $value->address }}" style="width: 300px;"></td>
+                                        <td><input type="text" class="form-control" name="penyulang[]" value="{{ $value->feeder }}" style="width: 80px;"></td>
+                                        <td><input type="number" class="form-control" name="qty[]" value="{{ $value->qty }}" style="width: 70px;"></td>
+                                        <td><input type="text" class="form-control bg-white satuan" value="{{ $value->material ? $value->material->base_unit_of_measure : '' }}" readonly style="width: 50px;"></td>
+                                        <td><input type="text" class="form-control numbering" name="nilai_pekerjaan[]" value="{{ $value->job_value }}" style="width: 100px;"></td>
+                                        <td><input type="text" class="form-control numbering" name="nilai_material[]" value="{{ $value->rem_val_cnt_cur }}" style="width: 100px;"></td>
+                                        <td><input type="text" class="form-control numbering" name="nilai_overhead[]" value="{{ $value->overhead_value }}" style="width: 100px;"></td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
                     <div class="d-flex justify-content-end">
                         <button class="btn btn-white btn-sm ms-2" type="button"><i class="bi bi-arrow-clockwise"></i> Reset</button>
-                        <button class="btn btn-primary btn-sm ms-2" type="submit"><i class="bi bi-cloud-arrow-up-fill"></i> Simpan</button>
+                        <button class="btn btn-primary btn-sm ms-2" type="submit"><i class="bi bi-cloud-arrow-up-fill"></i> Update</button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="hapus-material-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Hapus Material</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p><i class="bi bi-exclamation-triangle-fill text-danger"></i> Data yang dihapus tidak dapat dikembalikan</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-white" type="button" data-bs-dismiss="modal">Batal</button>
+                    <div id="action-hapus"></div>
+                </div>
             </div>
         </div>
     </div>
 @endsection
 @section('js')
     <script>
-        // $(document).on('click', '.chip:not(.remove-tag)', function(e){
-        // });
         InitializeInput();
         function InitializeInput(){
             const numeralMask = document.querySelectorAll('.numbering');
@@ -160,13 +183,14 @@
             $("#dynamic_form").append(`
                 <tr class="new-form">
                     <td class="text-center"><a class="btn btn-danger btn-sm btn-hapus" href="#"><i class="bi-trash-fill"></i> Hapus</a></td>
-                    <td><input type="text" class="form-control" name="master_asset[]" style="width: 100px;"></td>
                     <td>
-                        <select class="form-control material select2-form w-100" name="material[]" style="width: 120px;">
+                        <input type="hidden" class="form-control" name="cj70_material[]" value="" style="width: 100px;">
+                        <input type="text" class="form-control" name="master_asset[]" style="width: 100px;"></td>
+                    <td>
+                        <select class="form-control material select2-form w-100" name="material[]" style="width: 150px;">
                             <option value="" selected="">Pilih No. Material</option>
                         </select>
                     </td>
-                    <td><input type="text" class="form-control bg-white nama_material" readonly style="width: 200px;"></td>
                     <td><input type="text" class="form-control" name="gardu[]" style="width: 50px;"></td>
                     <td><input type="text" class="form-control" name="alamat[]" style="width: 300px;"></td>
                     <td><input type="text" class="form-control" name="penyulang[]" style="width: 80px;"></td>
@@ -186,8 +210,15 @@
         })
 
         $("#dynamic_form").on("click", ".btn-hapus", function(){
-            $(this).parent().parent('.new-form').remove();
+            var id = $(this).data('id');
+            if(id){
+                var url = '{{ url("cj70/delete/material") }}/'+id;
+                $('#action-hapus').html(`
+                    <button class="btn btn-danger" type="button" onclick="location.href='${url}'">Hapus</button>
+                `);
+            }else{
+                $(this).parent().parent('.new-form').remove();
+            }
         });
-
     </script>
 @endsection
