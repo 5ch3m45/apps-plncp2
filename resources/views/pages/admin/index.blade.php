@@ -54,16 +54,23 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @forelse($users as $user)
                             <tr>
-                                <td><a href="admin-detail.html">Detail</a></td>
-                                <td>MAULANA ICHWAN ANSHORY</td>
-                                <td>DEVELOPER</td>
-                                <td>maulanaichwana@gmail.com</td>
-                                <td>088233010696</td>
-                                <td>2023-03-17 12:00:00</td>
+                                <td><a href="{{ route('admin.show', compact('user')) }}">Detail</a></td>
+                                <td>{{ strtoupper($user->name) }}</td>
+                                <td>{{ strtoupper($user->unit) }}</td>
+                                <td>{{ strtolower($user->email) }}</td>
+                                <td>{{ $user->phone ?? '-' }}</td>
+                                <td>{{ $user->last_login }}</td>
                             </tr>
+                            @empty
+                            <tr>
+                                <td colspan="6" class="text-center">Belum ada data</td>
+                            </tr>
+                            @endforelse
                         </tbody>
                     </table>
+                    {{ $users->render("pagination::bootstrap-4") }}
                 </div>
             </div>
         </div>

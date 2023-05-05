@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class AdminController extends Controller
 {
@@ -11,9 +12,12 @@ class AdminController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('pages.admin.index');
+        $users = User::query();
+
+        $users = $users->paginate(10)->withQueryString();
+        return view('pages.admin.index', compact('users'));
     }
 
     /**
@@ -43,9 +47,9 @@ class AdminController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(User $user)
     {
-        //
+        return view('pages.admin.show', compact('user'));
     }
 
     /**

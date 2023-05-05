@@ -3,82 +3,52 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class AuthController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function login(Request $request)
+    {
+        if($request->isMethod('post')) {
+            $user = User::where('email', $request->email)->first();
+            if(!$user) {
+                return redirect()->back()->withInput()->with('email_error', 'Email tidak ditemukan');
+            }
+            if(!\Hash::check($request->password, $user->password)) {
+                return redirect()->back()->withInput()->with('password_error', 'Password tidak tepat');
+            }
+
+            \Auth::loginUsingId($user->id, $remember = ($request->remember == 1));
+
+            return redirect()->to(route('monitoring-pdp.index'));
+        }
+        return view('pages.auth.login');
+    }
+
+    public function forgotPassword()
+    {
+        return view('pages.auth.forgot-password');
+    }
+
+    public function forgotPasswordPost(Request $request)
     {
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function logout(Request $request)
     {
-        //
-    }
+        \Auth::logout();
+        \Session::flush();
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+        return redirect()->to(route('login'));
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    
+    public function generateUserDummy(Request $request)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => \Hash::make($request->password)
+        ]);
     }
 }

@@ -29,17 +29,22 @@ use App\Http\Controllers\{
 // });
 
 
-Route::get('login', [AuthController::class, 'index'])->middleware('guest')->name('login');
+Route::get('login', [AuthController::class, 'login'])->middleware('guest')->name('login');
 Route::post('login', [AuthController::class, 'login']);
+Route::get('lupa-password', [AuthController::class, 'forgotPassword'])->middleware('guest')->name('forgot-password');
 
-Route::middleware([/* 'auth' */ 'guest'])->group(function() {
-    Route::get('admin', [AdminController::class, 'index']);
-    Route::get('admin/create', [AdminController::class, 'create']);
-    Route::post('admin/create', [AdminController::class, 'store']);
-    Route::get('admin/show/{id}', [AdminController::class, 'show']);
-    Route::get('admin/edit/{id}', [AdminController::class, 'edit']);
-    Route::post('admin/edit/{id}', [AdminController::class, 'update']);
-    Route::delete('admin/delete/{id}', [AdminController::class, 'destroy']);
+Route::get('generate-user', [AuthController::class, 'generateUserDummy']);
+
+Route::middleware(['auth'])->group(function() {
+    Route::group(['prefix' => 'admin', 'as' => 'admin.'], function() {
+        Route::get('', [AdminController::class, 'index'])->name('index');
+        Route::get('create', [AdminController::class, 'create']);
+        Route::post('create', [AdminController::class, 'store']);
+        Route::get('show/{user}', [AdminController::class, 'show'])->name('show');
+        Route::get('edit/{user}', [AdminController::class, 'edit']);
+        Route::post('edit/{user}', [AdminController::class, 'update']);
+        Route::delete('delete/{user}', [AdminController::class, 'destroy']);
+    });
 
     Route::group(['prefix' => 'cj70', 'as' => 'cj70.'], function() {
         Route::get('', [Cj70Controller::class, 'index'])->name('index');
@@ -76,7 +81,7 @@ Route::middleware([/* 'auth' */ 'guest'])->group(function() {
     Route::get('material', [MaterialController::class, 'index'])->name('material.index');
     Route::post('material/import', [MaterialController::class, 'import'])->name('material.import');
 
-    Route::get('monitoring-pdp', [MonitoringPdpController::class, 'index']);
+    Route::get('monitoring-pdp', [MonitoringPdpController::class, 'index'])->name('monitoring-pdp.index');
     Route::get('monitoring-pdp/show/{id}', [MonitoringPdpController::class, 'show']);
     Route::get('monitoring-pdp/edit/{id}', [MonitoringPdpController::class, 'edit']);
     Route::post('monitoring-pdp/edit/{id}', [MonitoringPdpController::class, 'update']);
@@ -91,6 +96,12 @@ Route::middleware([/* 'auth' */ 'guest'])->group(function() {
 
     Route::get('monitoring-pfk/show/{id}/sub/{sub_id}', [SubMonitoringPfkController::class, 'show']);
 
-    Route::get('profile', [ProfileController::class, 'index']);
-    Route::post('profile', [ProfileController::class, 'update']);
+    Route::group(['prefix' => 'profile', 'as' => 'profile.'], function() {
+        Route::get('', [ProfileController::class, 'index'])->name('index');
+        Route::post('', [ProfileController::class, 'update'])->name('update');
+        Route::post('password', [ProfileController::class, 'password'])->name('password');
+        Route::post('photo', [ProfileController::class, 'photo'])->name('photo');
+    });
+
+    Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 });

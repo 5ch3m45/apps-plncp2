@@ -12296,7 +12296,7 @@ td,
 th a,
 td a,
 td span {
-    font-size: .6rem;
+    font-size: .7rem;
 }
 
 a {
@@ -12456,4 +12456,9 @@ a {
 
 .card-body{
     margin-bottom: 0px;
+}
+
+.btn.bg-primary:hover {
+    --bs-bg-opacity: 1;
+    background-color: rgba(var(--bs-link-hover-color-rgb), var(--bs-bg-opacity)) !important;
 }
