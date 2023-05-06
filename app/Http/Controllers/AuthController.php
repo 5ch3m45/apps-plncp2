@@ -10,9 +10,9 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         if($request->isMethod('post')) {
-            $user = User::where('email', $request->email)->first();
+            $user = User::where(['email' => $request->email, 'is_active' => 1])->first();
             if(!$user) {
-                return redirect()->back()->withInput()->with('email_error', 'Email tidak ditemukan');
+                return redirect()->back()->withInput()->with('email_error', 'Email tidak ditemukan atau nonaktif');
             }
             if(!\Hash::check($request->password, $user->password)) {
                 return redirect()->back()->withInput()->with('password_error', 'Password tidak tepat');

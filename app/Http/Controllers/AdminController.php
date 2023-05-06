@@ -75,14 +75,27 @@ class AdminController extends Controller
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function active(User $user)
     {
-        //
+        $user->update([
+            'is_active' => 1
+        ]);
+
+        return redirect()->back()->with([
+            'level' => 'success',
+            'message' => 'Admin berhasil diaktifkan'
+        ]);
+    }
+
+    public function deactive(User $user)
+    {
+        $user->update([
+            'is_active' => 0
+        ]);
+
+        return redirect()->back()->with([
+            'level' => 'success',
+            'message' => 'Admin berhasil dinonaktifkan'
+        ]);
     }
 }

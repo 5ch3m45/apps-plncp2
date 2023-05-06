@@ -30,12 +30,12 @@ use App\Http\Controllers\{
 
 
 Route::get('login', [AuthController::class, 'login'])->middleware('guest')->name('login');
-Route::post('login', [AuthController::class, 'login']);
+Route::post('login', [AuthController::class, 'login'])->middleware('throttle:30,1');
 Route::get('lupa-password', [AuthController::class, 'forgotPassword'])->middleware('guest')->name('forgot-password');
 
 Route::get('generate-user', [AuthController::class, 'generateUserDummy']);
 
-Route::middleware(['auth'])->group(function() {
+Route::middleware(['auth', 'active.admin'])->group(function() {
     Route::group(['prefix' => 'admin', 'as' => 'admin.'], function() {
         Route::get('', [AdminController::class, 'index'])->name('index');
         Route::get('create', [AdminController::class, 'create']);
@@ -43,7 +43,8 @@ Route::middleware(['auth'])->group(function() {
         Route::get('show/{user}', [AdminController::class, 'show'])->name('show');
         Route::get('edit/{user}', [AdminController::class, 'edit']);
         Route::post('edit/{user}', [AdminController::class, 'update']);
-        Route::delete('delete/{user}', [AdminController::class, 'destroy']);
+        Route::post('edit/{user}/active', [AdminController::class, 'active'])->name('active');
+        Route::post('edit/{user}/deactive', [AdminController::class, 'deactive'])->name('deactive');
     });
 
     Route::group(['prefix' => 'cj70', 'as' => 'cj70.'], function() {

@@ -38,9 +38,18 @@
                     </table>
                 </div>
                 <div class="d-flex justify-content-end">
-                    <button class="btn btn-danger">Nonaktifkan</button>
+                    @if($user->is_active == 1)
+                    <button class="btn btn-danger" data-bs-target="#deactivate-admin-modal" data-bs-toggle="modal">Nonaktifkan</button>
+                    @else
+                    <form action="{{ route('admin.active', ['user' => $user]) }}" method="POST">
+                        @csrf
+                        <button type="submit" class="btn btn-success">Aktifkan</button>
+                    </form>
+                    @endif
                 </div>
             </div>
         </div>
     </div>
+
+    <x-modal.deactivate-admin :user="$user"/>
 @endsection
