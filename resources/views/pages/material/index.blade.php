@@ -38,7 +38,7 @@
                         <a href="{{ route('material.index') }}">
                             <button type="button" class="btn btn-white me-2"><i class="bi bi-arrow-clockwise"></i> Reset</button>
                         </a>
-                        <a href="/dashboard/admin/create">
+                        <a href="{{ route('material.create') }}">
                             <button type="button" class="btn btn-success me-2">+ Baru</button>
                         </a>
                         <button type="button" class="btn btn-success me-2" data-bs-target="#import-material-modal" data-bs-toggle="modal"><i class="bi bi-cloud-arrow-up-fill"></i> Import</button>

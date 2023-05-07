@@ -81,6 +81,8 @@ Route::middleware(['auth', 'active.admin'])->group(function() {
 
     Route::group(['prefix' => 'material', 'as' => 'material.'], function() {
         Route::get('', [MaterialController::class, 'index'])->name('index');
+        Route::get('create', [MaterialController::class, 'create'])->name('create');
+        Route::post('create', [MaterialController::class, 'store'])->name('store');
         Route::get('show/{material}', [MaterialController::class, 'show'])->name('show');
         Route::post('show/{material}', [MaterialController::class, 'update'])->name('update');
         Route::delete('show/{material}', [MaterialController::class, 'destroy'])->name('delete');

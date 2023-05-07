@@ -9,11 +9,6 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class MaterialController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index(Request $request)
     {
         $type = $request->type;
@@ -24,56 +19,42 @@ class MaterialController extends Controller
         return view('pages.material.index', compact('data'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        return view('pages.material.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'code' => 'required',
+            'material_description' => 'required',
+            'base_unit_of_measure' => 'required',
+            'unrestricted_use_stock' => 'nullable|numeric',
+            'quality_inspection_stock' => 'nullable|numeric',
+            'blocked_stock' => 'nullable|numeric',
+            'in_transit_stock' => 'nullable|numeric',
+            'valation_class' => 'nullable|numeric'
+        ]);
+
+        $material = Material::create($request->all());
+
+        return redirect()->to(route('material.show', $material))->with([
+            'level' => 'success',
+            'message' => 'Material berhasil disimpan.'
+        ]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show(Material $material)
     {
         return view('pages.material.show', compact('material'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Material $material)
     {
         $material->update($request->all());
@@ -84,12 +65,6 @@ class MaterialController extends Controller
         ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Material $material)
     {
         $material->delete();
