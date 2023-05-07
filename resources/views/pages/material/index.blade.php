@@ -35,6 +35,9 @@
                             <label class="form-label">&nbsp;</label>
                         </div>
                         <button type="submit" class="btn btn-primary me-2"><i class="bi bi-search"></i> Cari</button>
+                        <a href="{{ route('material.index') }}">
+                            <button type="button" class="btn btn-white me-2"><i class="bi bi-arrow-clockwise"></i> Reset</button>
+                        </a>
                         <a href="/dashboard/admin/create">
                             <button type="button" class="btn btn-success me-2">+ Baru</button>
                         </a>

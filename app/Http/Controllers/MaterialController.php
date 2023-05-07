@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Material;
-use App\Imports\ExcelMaterial;
 use Illuminate\Http\Request;
+use App\Imports\ExcelMaterial;
+use Maatwebsite\Excel\Facades\Excel;
 
 class MaterialController extends Controller
 {
@@ -17,8 +18,8 @@ class MaterialController extends Controller
     {
         $type = $request->type;
         $search = $request->search;
-        $data = Material::when($type, function($query) use ($type,$search){
-            $query->where($type,'like',$search.'%');
+        $data = Material::when($type, function($query) use ($type, $search){
+            $query->where($type,'like', '%'.$search.'%');
         })->paginate(20);
         return view('pages.material.index', compact('data'));
     }
@@ -50,9 +51,9 @@ class MaterialController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Material $material)
     {
-        //
+        return view('pages.material.show', compact('material'));
     }
 
     /**
@@ -73,9 +74,14 @@ class MaterialController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Material $material)
     {
-        //
+        $material->update($request->all());
+
+        return redirect()->back()->with([
+            'level' => 'success',
+            'message' => 'Material berhasil diupdate'
+        ]);
     }
 
     /**
@@ -84,9 +90,13 @@ class MaterialController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Material $material)
     {
-        //
+        $material->delete();
+        return redirect()->to(route('material.index'))->with([
+            'level' => 'success',
+            'message' => 'Material berhasil dihapus.'
+        ]);
     }
 
     public function import(Request $request)
@@ -94,7 +104,7 @@ class MaterialController extends Controller
         $this->validate($request, [
             'file' => 'required|mimes:xlsx|max:2048',
         ]);
-        \Excel::import(new ExcelMaterial, $request->file('file'));
+        Excel::import(new ExcelMaterial, $request->file('file'));
         return redirect()->back()->withSuccess('Berhasil import file');
     }
 }

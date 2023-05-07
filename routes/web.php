@@ -79,8 +79,13 @@ Route::middleware(['auth', 'active.admin'])->group(function() {
     Route::post('lampiran-2f3/edit/{id}', [Lampiran2f3Controller::class, 'update']);
     Route::delete('lampiran-2f3/delete/{id}', [Lampiran2f3Controller::class, 'destroy']);
 
-    Route::get('material', [MaterialController::class, 'index'])->name('material.index');
-    Route::post('material/import', [MaterialController::class, 'import'])->name('material.import');
+    Route::group(['prefix' => 'material', 'as' => 'material.'], function() {
+        Route::get('', [MaterialController::class, 'index'])->name('index');
+        Route::get('show/{material}', [MaterialController::class, 'show'])->name('show');
+        Route::post('show/{material}', [MaterialController::class, 'update'])->name('update');
+        Route::delete('show/{material}', [MaterialController::class, 'destroy'])->name('delete');
+        Route::post('import', [MaterialController::class, 'import'])->name('import');
+    });
 
     Route::get('monitoring-pdp', [MonitoringPdpController::class, 'index'])->name('monitoring-pdp.index');
     Route::get('monitoring-pdp/show/{id}', [MonitoringPdpController::class, 'show']);

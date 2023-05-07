@@ -1,22 +1,21 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\Modal;
 
+use App\Models\Material;
 use Illuminate\View\Component;
 
-class Alert extends Component
+class HapusMaterial extends Component
 {
+    public $material;
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public $level;
-    public $message;
-    public function __construct($level = 'success', $message)
+    public function __construct(Material $material)
     {
-        $this->level   = $level;
-        $this->message = $message;
+        $this->material = $material;
     }
 
     /**
@@ -26,6 +25,6 @@ class Alert extends Component
      */
     public function render()
     {
-        return view('components.alert');
+        return view('components.modal.hapus-material');
     }
 }
