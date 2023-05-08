@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\{
     AuthController,
     AdminController,
@@ -24,10 +26,10 @@ use App\Http\Controllers\{
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
+Route::get('/artisan', function (Request $request) {
+    $run = Artisan::call($request->cmd);
+    dd(json_encode($run));
+});
 
 Route::get('login', [AuthController::class, 'login'])->middleware('guest')->name('login');
 Route::post('login', [AuthController::class, 'login'])->middleware('throttle:30,1');
